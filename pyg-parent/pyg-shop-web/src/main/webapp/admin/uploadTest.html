@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <title>Title</title>
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/angularjs/angular.min.js"></script>
+
+    <script>
+
+        var app = angular.module('app', []);
+        app.controller('ctr', function ($scope, $http) {
+            $scope.upload=function() {
+
+                var formData = new FormData();
+                formData.append("file", myfile.files[0]);
+                $http({
+                    method:'POST',
+                    url:'../upload.do',
+                    data:formData,
+                    headers: {'Content-Type':undefined},
+                    transformRequest: angular.identity
+                }).success(function(response){
+                    console.log(response);
+                    //alert("上传成功"+response);
+                    $scope.image_url=response.message;
+                    //console.log(formData);
+
+                }).error(function(){
+                    alert("上传失败");
+                });
+
+                /* var formData = new FormData();
+                 formData.append('file', $('#file')[0].files[0]);
+                 $.ajax({
+                 url: 'upload',
+                 type: 'POST',
+                 cache: false,
+                 data: formData,
+                 processData: false,
+                 contentType: false
+                 }).done(function(res) {
+                 alert("上传成功"+res);
+                 console.log(res);
+                 $scope.image_url=res;
+                 }).fail(function(res) {
+                 alert("上传失败");
+                 }); */
+            }
+        });
+    </script>
+</head>
+<body>
+<body ng-app="app" ng-controller="ctr">
+<div>
+    <div class="modal-body">
+        <table class="table table-bordered table-striped">
+            <td><input type="file"  id="myfile" />
+                <button ng-click="upload()">上传</button></td>
+            <td>
+                <img  src="{{image_url}}" width="360px" height="360">
+            </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</body>
+</html>

@@ -1,0 +1,32 @@
+package com.pyg.service;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * 认证类
+ */
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        System.out.println("经过认证类：" + username);
+
+        //下面两句话是构建角色列表
+        List<GrantedAuthority> authorities = new ArrayList();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        //走这里是已经经过CAS认证后的,所以不知道密码，也不需要
+        return new User(username, "" , authorities);
+
+    }
+}
